@@ -90,16 +90,19 @@ CURRENT_DIR=$(pwd)
 # Change directory to the kubespray repo
 cd $LOCAL_REPO_PATH
 
+# Fetch all remote refs
+git fetch --all > /dev/null 2>&1
+
 # Relative paths to the checksums.yml and main.yml within the repo
 CHECKSUMS_FILE_PATH="roles/download/defaults/main/checksums.yml"
 MAIN_FILE_PATH="roles/download/defaults/main.yml"
 
-# Fetch all branches and populate the BRANCHES array
-BRANCHES=$(git for-each-ref refs/heads/ --format='%(refname:short)')
+# Fetch all branches and populate the BRANCHES array using remote references
+BRANCHES=$(git for-each-ref refs/remotes/origin/ --format='%(refname:strip=2)')
 
 for branch in $BRANCHES; do
-    # Checkout the desired branch and suppress the output
-    git checkout "$branch" > /dev/null 2>&1
+    # Checkout the desired branch quietly
+    git checkout -q "$branch"
 
     declare -a table
 
