@@ -45,10 +45,10 @@ expand_python_versions() {
     extract_kubectl_versions() {
         FILE_PATH=$1
 
-        if yq e 'has("kubectl_checksums.amd64")' $FILE_PATH > /dev/null && \
-           yq e '.kubectl_checksums.amd64 != null' $FILE_PATH > /dev/null && \
-           yq e '.kubectl_checksums.amd64 | type' $FILE_PATH | grep -q "map"; then
-            yq e '.kubectl_checksums.amd64 | keys | .[]' $FILE_PATH | grep -E "^v[0-9]+\.[0-9]+\.[0-9]+$" | tr '\n' ',' | sed 's/,$//' | sed 's/,/, /g'
+        if yq e 'has("kubectl_checksums.amd64")' "$FILE_PATH" > /dev/null && \
+           yq e '.kubectl_checksums.amd64 != null' "$FILE_PATH" > /dev/null && \
+           yq e '.kubectl_checksums.amd64 | type' "$FILE_PATH" | grep -q "map"; then
+            yq e '.kubectl_checksums.amd64 | keys | .[]' "$FILE_PATH" | grep -E "^v[0-9]+\.[0-9]+\.[0-9]+$" | tr '\n' ',' | sed 's/,$//' | sed 's/,/, /g'
         else
             echo ""
         fi
@@ -88,7 +88,7 @@ LOCAL_REPO_PATH="./kubespray"
 CURRENT_DIR=$(pwd)
 
 # Change directory to the kubespray repo
-cd $LOCAL_REPO_PATH
+cd "$LOCAL_REPO_PATH" || exit
 
 # Relative paths to the checksums.yml and main.yml within the repo
 CHECKSUMS_FILE_PATH="roles/download/defaults/main/checksums.yml"
@@ -107,7 +107,7 @@ for branch in $BRANCHES; do
     table=()
     count=1
     while IFS= read -r line; do
-        count=$[$count +1]
+        count=$((count + 1))
         # Look for lines that match the pattern of the table rows
         if [[ "$line" =~ ^\|[[:space:]]*([0-9]+\.[0-9]+)[[:space:]]*\|[[:space:]]*([0-9]+\.[0-9]+(-[0-9]+\.[0-9]+)?(,[0-9]+\.[0-9]+(-[0-9]+\.[0-9]+)?)?)[[:space:]]*\| ]]; then
             ansible_version="${BASH_REMATCH[1]}"
@@ -165,7 +165,7 @@ for branch in $BRANCHES; do
             echo "Kubernetes Versions (kubectl) supported:"
             echo "$KUBECTL_VERSIONS"
             echo "-----------------------------"
-        elif [ ! -z $DESIRED_PYTHON_VERSION ] && [ "$python_match" == true ] && [ -z $DESIRED_K8S_VERSION ]; then
+        elif [ -n "$DESIRED_PYTHON_VERSION" ] && [ "$python_match" == true ] && [ -z "$DESIRED_K8S_VERSION" ]; then
             echo "Kubespray Version (BRANCH): $branch"
             echo ""
             for row in "${table[@]}"; do
@@ -176,7 +176,7 @@ for branch in $BRANCHES; do
                 echo "$KUBECTL_VERSIONS"
             fi
             echo "-----------------------------"
-        elif [ ! -z $DESIRED_K8S_VERSION ] && [ "$k8s_match" == true ] && [ -z $DESIRED_PYTHON_VERSION ]; then
+        elif [ -n "$DESIRED_K8S_VERSION" ] && [ "$k8s_match" == true ] && [ -z "$DESIRED_PYTHON_VERSION" ]; then
             echo "Kubespray Version (BRANCH): $branch"
             echo ""
             for row in "${table[@]}"; do
@@ -186,7 +186,7 @@ for branch in $BRANCHES; do
             echo "$KUBECTL_VERSIONS"
             echo "-----------------------------"
         fi
-    elif [ -z $DESIRED_K8S_VERSION ] && [ -z $DESIRED_PYTHON_VERSION ]; then
+    elif [ -z "$DESIRED_K8S_VERSION" ] && [ -z "$DESIRED_PYTHON_VERSION" ]; then
         echo "Kubespray Version (BRANCH): $branch"
         echo ""
         for row in "${table[@]}"; do
@@ -202,4 +202,4 @@ for branch in $BRANCHES; do
 done
 
 # Switch back to the original directory
-cd $CURRENT_DIR
+cd "$CURRENT_DIR" || exit
