@@ -103,6 +103,15 @@ for branch in $BRANCHES; do
 
     declare -a table
 
+    # Determine ansible docs path
+    if [ -f docs/ansible.md ]; then
+        ANSIBLE_FILE="docs/ansible.md"
+    elif [ -f docs/ansible/ansible.md ]; then
+        ANSIBLE_FILE="docs/ansible/ansible.md"
+    else
+        continue
+    fi
+
     # Extract information from ansible.md
     table=()
     count=1
@@ -129,7 +138,7 @@ for branch in $BRANCHES; do
                 fi
             done
         fi
-    done < docs/ansible.md
+    done < "$ANSIBLE_FILE"
 
     # If the checksums.yml file exists, parse it
     if [ -f $CHECKSUMS_FILE_PATH ]; then
