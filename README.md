@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This script helps to extract information from the [Kubespray](https://github.com/kubernetes-sigs/kubespray) repository regarding Ansible, Python, and Kubernetes (kubectl) versions supported in each branch. The information is extracted from the `ansible.md` file and the relevant YML files in the repository.
+This script helps to extract information from the [Kubespray](https://github.com/kubernetes-sigs/kubespray) repository regarding Ansible, Python, and Kubernetes (kubectl) versions supported in each branch. The information is extracted from the `ansible.md` file (found at `docs/ansible.md` or `docs/ansible/ansible.md`)  and the relevant YML files in the repository.
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ This script helps to extract information from the [Kubespray](https://github.com
 
 ## Installation
 
-1. Ensure you have `yq` installed. If not, you can get it [here](https://github.com/mikefarah/yq) or isntall using `apt`.
+1. Ensure you have `yq` installed. If not, you can get it [here](https://github.com/mikefarah/yq) or install using `apt`.
 2. Clone this repository or copy the script.
 
 ## Usage
@@ -62,5 +62,5 @@ The script operates as follows:
 1. It checks for the installation of `yq`.
 2. The desired Kubernetes and/or Python version to filter are specified through the command-line options.
 3. The Kubespray repository is cloned (if not already present).
-4. The script traverses through each branch, reading from the `ansible.md` file.
+4. The script traverses through each branch, reading from the `ansible.md` file located at `docs/ansible.md` or `docs/ansible/ansible.md`.
 5. Relevant information is extracted and displayed based on the provided filters.

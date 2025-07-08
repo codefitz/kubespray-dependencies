@@ -103,7 +103,7 @@ for branch in $BRANCHES; do
 
     declare -a table
 
-    # Extract information from ansible.md
+    # Extract information from ansible.md (docs/ansible.md or docs/ansible/ansible.md)
     table=()
     count=1
     while IFS= read -r line; do
