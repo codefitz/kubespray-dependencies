@@ -7,6 +7,12 @@ then
     exit 1
 fi
 
+# Ensure git is installed
+if ! command -v git >/dev/null; then
+    echo "git is required" >&2
+    exit 1
+fi
+
 # Initialize optional parameters
 DESIRED_K8S_VERSION=""
 DESIRED_PYTHON_VERSION=""
