@@ -122,8 +122,6 @@ for branch in $BRANCHES; do
     else
         continue
     fi
-
-    # Extract information from ansible.md
     table=()
     count=1
     while IFS= read -r line; do
