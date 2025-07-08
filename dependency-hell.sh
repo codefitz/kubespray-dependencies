@@ -20,6 +20,8 @@ expand_python_versions() {
     IFS=',' read -ra ADDR <<< "$input_versions"
 
     for version in "${ADDR[@]}"; do
+        # Remove any leading or trailing whitespace from the version entry
+        version=$(echo "$version" | xargs)
         # Check if it's a range or a single version
         if [[ "$version" =~ ^([0-9]+\.[0-9]+)-([0-9]+\.[0-9]+)$ ]]; then
             start_version="${BASH_REMATCH[1]}"
