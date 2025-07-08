@@ -3,8 +3,8 @@
 # Ensure yq is installed
 if ! command -v yq &> /dev/null
 then
-    echo "yq could not be found. Please install it first."
-    exit
+    echo "yq could not be found. Please install it first." >&2
+    exit 1
 fi
 
 # Initialize optional parameters
